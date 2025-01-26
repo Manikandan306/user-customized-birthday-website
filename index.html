@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Birthday Card</title>
+    <title>Interactive Card</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -79,22 +79,27 @@
     <div class="container">
         <!-- Upload Section -->
         <div class="upload-section" id="uploadSection">
-            <h2>Upload Photo, Audio, and Enter Your Name To Customize the Website</h2>
+            <h2>Upload Your Photo, Audio, and Enter Your Details</h2>
             <input type="file" id="imageInput" accept="image/*" required>
             <input type="file" id="audioInput" accept="audio/*" required>
             <input type="text" id="nameInput" placeholder="Enter your name" required>
+            <select id="occasionSelect">
+                <option value="Happy Birthday">Happy Birthday</option>
+                <option value="Wedding Anniversary">Wedding Anniversary</option>
+                <option value="Friendship Day">Friendship Day</option>
+            </select>
             <button id="submitUploads">Submit</button>
         </div>
 
-        <!-- Birthday Card Section -->
+        <!-- Card Section -->
         <div class="birthday-card" id="birthdayCard">
             <img src="./placeholder.jpg" alt="Placeholder Image" id="birthdayImage">
-            <h1>Happy Birthday!</h1>
+            <h1 id="occasionHeading">Happy Birthday!</h1>
             <audio id="birthdayAudio" controls>
                 <source src="./placeholder.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            <p>May your day be filled with happiness, laughter, and all the things you love.</p>
+            <p id="occasionMessage">May your day be filled with happiness, laughter, and all the things you love.</p>
             <p>Wishing you a fantastic year ahead!</p>
             <p class="signature">With love,<br><span id="userName">Karna❤️</span></p>
         </div>
@@ -106,15 +111,19 @@
         const imageInput = document.getElementById('imageInput');
         const audioInput = document.getElementById('audioInput');
         const nameInput = document.getElementById('nameInput');
+        const occasionSelect = document.getElementById('occasionSelect');
         const submitUploads = document.getElementById('submitUploads');
         const birthdayImage = document.getElementById('birthdayImage');
         const birthdayAudio = document.getElementById('birthdayAudio');
+        const occasionHeading = document.getElementById('occasionHeading');
+        const occasionMessage = document.getElementById('occasionMessage');
         const userName = document.getElementById('userName');
 
         submitUploads.addEventListener('click', () => {
             const imageFile = imageInput.files[0];
             const audioFile = audioInput.files[0];
             const userNameValue = nameInput.value.trim();
+            const selectedOccasion = occasionSelect.value;
 
             if (imageFile && audioFile && userNameValue) {
                 // Update the image
@@ -128,11 +137,21 @@
                 // Update the name
                 userName.textContent = userNameValue;
 
-                // Hide the upload section and show the birthday card
+                // Update the occasion heading and message
+                occasionHeading.textContent = selectedOccasion;
+                if (selectedOccasion === "Happy Birthday") {
+                    occasionMessage.textContent = "May your day be filled with happiness, laughter, and all the things you love.";
+                } else if (selectedOccasion === "Wedding Anniversary") {
+                    occasionMessage.textContent = "Wishing you endless love and happiness on this special day!";
+                } else if (selectedOccasion === "Friendship Day") {
+                    occasionMessage.textContent = "Celebrating the bond of friendship and the memories we've created!";
+                }
+
+                // Hide the upload section and show the card
                 uploadSection.style.display = 'none';
                 birthdayCard.style.display = 'block';
             } else {
-                alert('Please upload an image, an audio file, and enter your name.');
+                alert('Please upload an image, an audio file, select an occasion, and enter your name.');
             }
         });
     </script>
